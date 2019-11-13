@@ -84,4 +84,26 @@ router.put('/:id', (req, res) => {
   }
 });
 
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+
+  Exercises.remove(id)
+    .then(count => {
+      if (count && count > 0) {
+        res.status(200).json({
+          message: `The exercise with the ID of - ${id} was deleted`
+        });
+      } else {
+        res.status(404).json({
+          message: 'The exercise with the specified ID does not exist.'
+        });
+      }
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json({ error, error: 'The exercise could not be removed' });
+    });
+});
+
 module.exports = router;
